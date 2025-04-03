@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendário Escolar</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #000; /* Fundo preto */
+            color: #f8f9fa; /* Texto claro */
+        }
+        h1 {
+            text-align: center;
+            color: #17a2b8; /* Azul mais escuro */
+        }
+        #calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .day {
+            background: #212529; /* Fundo das células */
+            border: 1px solid #495057; /* Borda mais clara */
+            border-radius: 8px;
+            padding: 10px;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
+            transition: background 0.3s;
+        }
+        .day:hover {
+            background: #343a40; /* Efeito hover */
+        }
+        .event {
+            background: #0056b3; /* Azul mais escuro */
+            color: white;
+            padding: 5px;
+            margin-top: 5px;
+            border-radius: 3px;
+            font-size: 0.9em;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        #addEvent {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        input[type="date"], input[type="text"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #495057; /* Borda das entradas */
+            width: 200px;
+            background: #343a40; /* Fundo das entradas */
+            color: #f8f9fa; /* Texto claro */
+        }
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background: #0056b3; /* Azul mais escuro */
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #004085; /* Azul ainda mais escuro no hover */
+        }
+    </style>
+</head>
+<body>
+
+<h1>Calendário Escolar</h1>
+<div id="calendar"></div>
+
+<div id="addEvent">
+    <input type="date" id="eventDate">
+    <input type="text" id="eventDescription" placeholder="Descrição do evento">
+    <button onclick="addEvent()">Adicionar Evento</button>
+</div>
+
+<script>
+    const calendar = document.getElementById('calendar');
+
+    // Função para criar o calendário
+    function createCalendar() {
+        const daysInMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+        for (let i = 1; i <= daysInMonth; i++) {
+            const day = document.createElement('div');
+            day.classList.add('day');
+            day.innerHTML = `<strong>${i}</strong>`;
+            day.setAttribute('data-day', i);
+            calendar.appendChild(day);
+        }
+    }
+
+    // Função para adicionar evento
+    function addEvent() {
+        const dateInput = document.getElementById('eventDate').value;
+        const description = document.getElementById('eventDescription').value;
+
+        if (!dateInput || !description) {
+            alert('Por favor, preencha todos os campos.');
+            return;
+        }
+
+        const date = new Date(dateInput);
+        const dayElement = document.querySelector(`[data-day='${date.getDate()}']`);
+
+        if (dayElement) {
+            const event = document.createElement('div');
+            event.classList.add('event');
+            event.innerText = description;
+            dayElement.appendChild(event);
+            document.getElementById('eventDescription').value = ''; // Limpa o campo
+        } else {
+            alert('Data inválida ou fora do mês atual.');
+        }
+    }
+
+    createCalendar();
+</script>
+
+</body>
+</html>
